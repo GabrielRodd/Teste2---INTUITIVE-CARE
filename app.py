@@ -43,7 +43,7 @@ with pdfplumber.open(caminho_arquivo) as pdf:
             print('Tabela estruturada em formato csv.')
             compactar(arquivo_csv,"Gabriel_Rodrigues")
         
-        # Editando as abreviações das colunas OD e AMB
+        # Bloco de edição das abreviações das colunas OD e AMB
         novo_df = pd.read_csv(arquivo_csv)
 
         novo_df.rename(columns={'OD': 'Seg.Odontológica', 'AMB':'Seg.Ambulatorial'}, inplace=True)
