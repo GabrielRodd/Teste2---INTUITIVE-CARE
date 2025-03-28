@@ -5,18 +5,23 @@ import os
 
 
 def compactar(arquivo, nome):
-    zip_path = (f'Teste_{nome}.zip')
+    zip_path = os.path.join(pasta_saida, f'Teste_{nome}.zip')
+    
     if os.path.exists(zip_path):
         os.remove(zip_path)
 
     with zipfile.ZipFile(zip_path, 'w') as ziparquivo:
         ziparquivo.write(arquivo, os.path.basename(arquivo))
 
-
+    
 print("Deseja colar o caminho do arquivo PDF ou usar o caminho padrão dessa pasta?")
 print("1 - Para usar caminho padrão da pasta")
 print("2 - Para colar novo caminho")
 print('\n')
+
+pasta_saida = 'arquivos_saida'
+if not os.path.exists('arquivos_saida'):
+    os.makedirs('arquivos_saida')
 
 while True:
     try:
@@ -63,7 +68,7 @@ with pdfplumber.open(caminho_arquivo) as pdf:
 
         # Concatenando todos os data frames e gerando o arquivo csv
         df_final = pd.concat(todos_dfs)
-        arquivo_csv = "TabelaAnexo1.csv"
+        arquivo_csv = os.path.join(pasta_saida,"TabelaAnexo1.csv")
         df_final.to_csv(arquivo_csv, index=False, header=False)
 
         if df_final is not None:
@@ -74,6 +79,7 @@ with pdfplumber.open(caminho_arquivo) as pdf:
         novo_df = pd.read_csv(arquivo_csv)
         novo_df.rename(columns={'OD': 'Seg.Odontológica',
                        'AMB': 'Seg.Ambulatorial'}, inplace=True)
-        novo_df.to_csv('Modificado.csv', index=False)
+        arquivo_modificado = os.path.join(pasta_saida,'Modificado.csv')
+        novo_df.to_csv(arquivo_modificado, index=False)
 
         print("Títulos das colunas OD e AMB alterados no arquivo 'Modificado.csv'")
